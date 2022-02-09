@@ -16,4 +16,5 @@ Titanic_Data <- read.csv("/home/vaishnavi/Project/dataset.csv")
 glimpse(Titanic_Data)
 View(Titanic_Data)
 ```
+><img src="https://user-images.githubusercontent.com/65387125/153166584-4c470fe1-bd67-4b2e-9292-cb5859d09ca2.png"></img>
 
