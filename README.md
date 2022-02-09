@@ -10,3 +10,10 @@ library(rpart.plot)
 library(caret)
 library(ModelMetrics)
 ```
+### Import the dataset
+```r
+Titanic_Data <- read.csv("/home/vaishnavi/Project/dataset.csv")
+glimpse(Titanic_Data)
+View(Titanic_Data)
+```
+
