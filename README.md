@@ -91,4 +91,74 @@ colSums(is.na(Titanic_Data))
 ```
 <img src="https://user-images.githubusercontent.com/65387125/153348264-0d68706a-e454-428e-89fc-6207c559b256.png"></img>
 >The above code breaks the age into range of values as you can see in the image. Finally all the NA values are removed.
-
+### Training and Testing dataset
+```r
+Titanic_c = Titanic_Data[,c('Class','Sex','SibSp','Parch','Fare','Age_wiki','Embarked','Survived')]
+```
+>Copy this dataset as Titanic_c to divide it into traning and testing part.
+```r
+train_row_id <- sample(1:nrow(Titanic_c),size = ceiling(0.7*nrow(Titanic_c)))
+#View(train_row_id)
+X_train <- Titanic_c[train_row_id, ]
+x_test <- Titanic_c[-train_row_id, ]
+#removing col to be predicted from test dataset
+x_test1 <- x_test[,-8] 
+```
+>divide the dataset into training and testing part and remove the target class from it.
+### Data exploration and visualization
+#### This step is important because it gives us a better understanding of the dataset. The better we know the data, the better our analysis will be.
+```r
+library(ggplot2)
+ggplot(Titanic_c,aes(x=Sex))+geom_bar()
+```
+<img src="https://user-images.githubusercontent.com/65387125/153350329-b36fba93-54ae-4702-931c-9089b1713ffb.png"></img>
+```r
+table(Titanic_c$Sex)
+```
+<img src="https://user-images.githubusercontent.com/65387125/153350457-44848298-f787-4f55-aecb-e8cb3c1ca01f.png"></img>
+```r
+ggplot(Titanic_c,aes(x=Survived,fill=Sex))+geom_histogram(bins = 5)
+```
+<img src="https://user-images.githubusercontent.com/65387125/153350597-306893af-dced-49e3-b2b2-bc59eeb1dc61.png"></img>
+```r
+summary(Titanic_c$Age_wiki)
+```
+<img src="https://user-images.githubusercontent.com/65387125/153350836-946d0b68-b5a8-491e-9f82-cd9e425726d0.png"></img>
+```r
+ggplot(Titanic_c,aes(x=Survived,fill=Age_wiki))+geom_histogram(bins = 6)
+```
+<img src="https://user-images.githubusercontent.com/65387125/153351051-95abe4fd-6337-4d64-921d-fcbb773fd79b.png"></img>
+```r
+board_city <- unique(Titanic_Data$Boarded)
+board_city[1]
+```
+<img src="https://user-images.githubusercontent.com/65387125/153351299-e03cfede-4d83-4358-a006-f2616ad3fd72.png"></img>
+```r
+count1=0
+count2=0
+count3=0
+count4=0
+count5=0
+Titanic_Data$Boarded[1]
+for(i in 1:nrow(Titanic_Data)){
+  if(Titanic_Data$Boarded[i]==board_city[1]){
+    count1=count1+1
+  }
+  if(Titanic_Data$Boarded[i]==board_city[2]){
+    count2=count2+1
+  }
+  if(Titanic_Data$Boarded[i]==board_city[3]){
+    count3=count3+1
+  }
+  if(Titanic_Data$Boarded[i]==board_city[4]){
+    count4=count4+1
+  }
+  if(Titanic_Data$Boarded[i]==board_city[5]){
+    count5=count5+1
+  }
+}
+count_board <- c(count1,count2,count3,count4,count5)
+pie(count_board,labels = board_city,
+    col = rainbow(5))
+```
+<img src="https://user-images.githubusercontent.com/65387125/153351589-ec93cfd6-0ade-43aa-86be-c3928b169213.png"></img>
