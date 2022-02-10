@@ -162,7 +162,7 @@ pie(count_board,labels = board_city,
     col = rainbow(5))
 ```
 <img src="https://user-images.githubusercontent.com/65387125/153351589-ec93cfd6-0ade-43aa-86be-c3928b169213.png"></img>
-### Model building
+### Model building - Decision Tree 
 #### First model that we build is a decision tree model.
 ```r
 #model building
@@ -170,4 +170,72 @@ model <- rpart(Survived~.,data = X_train,method="class")
 View(model)
 ```
 <img src="https://user-images.githubusercontent.com/65387125/153364436-de0c6469-2316-4430-b21b-ec2618e9f2b9.png"></img>
-
+#### Testing the model
+```r
+#model testing
+model_pr <- predict(model,x_test1)
+plot(model)
+plot(model,uniform = TRUE,main="Titanic Survival")
+text(model,use.n = TRUE, all = TRUE, cex=.8)
+View(model_pr)
+```
+<img src="https://user-images.githubusercontent.com/65387125/153394222-cad27df2-4807-4bc4-a4c7-b56211182196.png"></img>
+```r
+model_pr <- ifelse(model_pr[,1] <= model_pr[,2],1,0)
+View(model_pr)
+str(model_pr)
+prediction <- table(model_pr, x_test$Survived)
+```
+<img src="https://user-images.githubusercontent.com/65387125/153394665-7af9043e-ae51-48cb-9611-704168eb825c.png"></img><br>
+<img src="https://user-images.githubusercontent.com/65387125/153394813-eb5d199a-db9d-4e04-942b-2ca0e2cb6aba.png"></img>
+```r
+acc2<-sum(diag(prediction))/sum(prediction)*100
+print(acc2)
+```
+<img src="https://user-images.githubusercontent.com/65387125/153395530-2c706897-676f-499b-b8ab-7b7b74dbf008.png"></img>
+>The above code gives us the accuracy of the model which is 80.89%.
+### Model building - Navie Bayesian
+### Now we will build another model which is Navie Bayesian and we will compare it's performance with the decision tree model.
+### First step is to define the class variables.
+```r
+#creating class variables
+titanic_class<-ifelse(Titanic_c$Survived==0,"No","Yes");
+titanic_2<-data.frame(Titanic_c,titanic_class)
+```
+### Then we will set the seed and divide our dataset into training and testing set.
+```r
+#using naive bayesian
+set.seed(2)
+id<-sample(2,nrow(titanic_2),prob=c(.7,.3),replace=TRUE)
+print(id)
+```
+<img src="https://user-images.githubusercontent.com/65387125/153396451-2945183e-38da-4b30-8908-a1d70e20e105.png"></img>
+```r
+titanic_train<-titanic_2[id==1,]
+titanic_test<-titanic_2[id==2,]
+print(titanic_train)
+print(titanic_test)
+```
+### Building the Naive Bayesian model.
+```r
+library(e1071)
+model<-naiveBayes(titanic_class~.,titanic_train)
+print(model)
+```
+<img src="https://user-images.githubusercontent.com/65387125/153396893-f081b352-29ca-4e36-9592-d058d7c9c260.png"></img><br>
+<img src="https://user-images.githubusercontent.com/65387125/153397018-8c030df6-7f4e-4592-935c-8741f55f8a9b.png"></img>
+### Predicting the model
+```r
+#predict model
+pmodel<-predict(model,titanic_test)
+```
+### Plot confusion matrix
+```r
+#plot confusion matrix
+prediction <- table(pmodel,titanic_test$titanic_class)
+acc2<-sum(diag(prediction))/sum(prediction)*100
+print(acc2)
+str(pmodel)
+```
+<img src="https://user-images.githubusercontent.com/65387125/153397470-dda63b4d-fd11-4d46-af46-d2e2b6ab082a.png"></img>
+>By using Navie Bayesian, we are getting the accuracy 98.89%. So we can say that Naive Bayesian is a better approach for Titanic Survival Prediction.
