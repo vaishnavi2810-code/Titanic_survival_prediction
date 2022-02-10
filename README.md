@@ -63,4 +63,32 @@ str(Titanic_Data$Class)
 Titanic_Data$Class <- ifelse(is.na(Titanic_Data$Class), median(Titanic_Data$Class,na.rm = TRUE), Titanic_Data$Class)
 ```
 > Replace NA values with median.
+### Next step is to remove the unecessary columns.
+```r
+str(Titanic_Data$WikiId)
+str(Titanic_Data$Body)
+```
+<img src="https://user-images.githubusercontent.com/65387125/153343170-7588d9c0-1980-42ed-9d95-576c68ffbd5f.png"></img>
+>By this information we can know that WikiId and Body columns has no importance in the dataset, so we can remove those columns.
+```r
+Titanic_Data <- select(Titanic_Data,-c('WikiId'))
+Titanic_Data <- select(Titanic_Data,-c('Body'))
+```
+```r
+table(Titanic_Data$Survived) #1 for survived , 0 for dead 
+```
+<img src="https://user-images.githubusercontent.com/65387125/153343556-2cf49f27-888e-4635-aa6b-8faaf8a03a37.png"></img>
+>This lists the number of passenegers in the target class, 1 is for survived and 0 is for not-survived.
+```r
+head(Titanic_Data$Ticket)
+Titanic_Data$Age_wiki <- as.numeric(Titanic_Data$Age_wiki)
+```
+>Convert Age_wiki to numeric data type.
+```r
+Titanic_Data$Age_wiki <- cut(Titanic_Data$Age_wiki , breaks=c(0,10,20,30,40,50,60,70,100), labels = c("0-10","10-20","20-30","30-40","40-50","50-60","60-70","70-100"))
+summary(Titanic_Data$Age_wiki)                            
+colSums(is.na(Titanic_Data))
+```
+<img src="https://user-images.githubusercontent.com/65387125/153348264-0d68706a-e454-428e-89fc-6207c559b256.png"></img>
+>The above code breaks the age into range of values as you can see in the image. Finally all the NA values are removed.
 
