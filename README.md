@@ -162,3 +162,12 @@ pie(count_board,labels = board_city,
     col = rainbow(5))
 ```
 <img src="https://user-images.githubusercontent.com/65387125/153351589-ec93cfd6-0ade-43aa-86be-c3928b169213.png"></img>
+### Model building
+#### First model that we build is a decision tree model.
+```r
+#model building
+model <- rpart(Survived~.,data = X_train,method="class")
+View(model)
+```
+<img src="https://user-images.githubusercontent.com/65387125/153364436-de0c6469-2316-4430-b21b-ec2618e9f2b9.png"></img>
+
